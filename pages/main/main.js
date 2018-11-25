@@ -16,9 +16,10 @@ Page({
     })
   },
   onTapOpen() {
-    if (connected)
+    console.log(app.globalData.deviceID)
+    if(this.data.connected)
       wx.navigateTo({
-        url: '../open/open?connectedDeviceId=' + app.globalData.deviceID + '&name=' + name
+        url: '../open/open?connectedDeviceId=' + app.globalData.deviceID + '&name=' + this.data.name
       })
   },
   onTapSet() {
@@ -110,7 +111,7 @@ Page({
           duration: 1000
         })
         app.globalData.connected = true
-        this.setData({
+        that.setData({
           connected: true,
           name: name1
         })
@@ -168,7 +169,7 @@ Page({
                 that.setData({
                   searching: false
                 })
-                that.connect_devices
+                that.connect_devices()
               }
             })
           }
@@ -196,7 +197,7 @@ Page({
                 that.setData({
                   searching: false
                 })
-                that.connect_devices
+                that.connect_devices()
               }
             })
           }
@@ -224,7 +225,7 @@ Page({
                 that.setData({
                   searching: false
                 })
-                that.connect_devices
+                that.connect_devices()
               }
             })
           }
@@ -234,16 +235,15 @@ Page({
         devicesList: that.data.devicesList
       })
     })
-    try {
-      var value = wx.getStorageSync('deviceID')
-      if (value) {
-        app.globalData.deviceID = value
-        console.log(value)
-        that.search_devices
+    wx.getStorage({
+      key: 'deviceID',
+      success(res) {
+        console.log(res.data)
+        app.globalData.deviceID = res.data
+        that.search_devices()
       }
-    } catch (e) {
-      // Do something when catch error
-    }
+    })
+
     wx.getStorage({
       key: 'deviceName',
       success(res) {
