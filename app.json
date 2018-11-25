@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/main/main",
+    "pages/search/search",
+    "pages/device/device",
+    "pages/open/open",
+    "pages/set/set",
+    "pages/password/password",
+    "pages/contact/contact",
+    "pages/method/method",
+    "pages/name/name",
+    "pages/precautions/precautions"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "navigationBarTitleText": "蓝牙开锁",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f8f8f8"
+  }
+}

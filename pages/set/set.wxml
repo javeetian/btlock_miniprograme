@@ -1,0 +1,8 @@
+<!--pages/set/set.wxml-->
+<view clase='set'>
+  <button bindtap='onTapName'>修改名称</button>
+  <button bindtap='onTapPassword'>修改密码</button>
+  <button bindtap='onTapMethod'>开锁方法</button>
+  <button bindtap='onTapPrecautions'>注意事项</button>
+  <button bindtap='onTapContact'>联系砺安</button>
+</view>

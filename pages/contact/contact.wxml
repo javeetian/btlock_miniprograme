@@ -1,0 +1,4 @@
+<!--pages/contact/contact.wxml-->
+<view class='current'>
+  <text style="color:gray">\t上海砺安智能科技有限公司\n\t公司网站：www.lazws.com\n\t服务电话：400-021-2112</text>
+</view>

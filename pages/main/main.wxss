@@ -1,0 +1,24 @@
+/* pages/main/main.wxss */
+page {
+  background-color: #ffffff;
+}
+.container {
+  padding: 0 30rpx 0 30rpx;
+  align-items: center;
+}
+.logo{
+ display:flex;
+ justify-content: center;
+}
+.logo image { 
+  width:400rpx;
+  height:400rpx;
+  }
+.lock{
+  padding: 30rpx 30rpx 30rpx 30rpx;
+  align-items: center;
+}
+.current{
+ display:flex;
+ justify-content: center;
+}

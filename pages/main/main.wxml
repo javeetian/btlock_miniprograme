@@ -1,0 +1,20 @@
+<!--pages/main/main.wxml-->
+<view class='main'>
+<view class='logo'>
+  <image src="/images/logo.png" class='in-image'>
+  </image>
+</view>
+<view class='current'>
+  <text style="color:gray">\n当前锁：{{connected?name:"无"}}</text>
+</view>
+<view class='current'>
+  <text>\n</text>
+</view>
+<view clase='lock'>
+  <button bindtap='onTapOpen'>开启蓝牙锁</button>
+  <button bindtap='onTapSearch'>寻找蓝牙锁</button>
+</view>
+<view clase='setting'>
+  <button bindtap='onTapSet'>设置</button>
+</view>
+</view>
