@@ -5,18 +5,34 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    name: '',
+    connectedDeviceId: '',
+    connected: false,
   },
 
   onTapName() {
-    wx.navigateTo({
-      url: '/pages/name/name',
-    })
+    if(this.data.connected)
+      wx.navigateTo({
+        url: '/pages/name/name?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
+      })
+    else
+      wx.showModal({
+        title: '提示',
+        content: '锁未连接',
+        showCancel: false
+      })
   },
 
   onTapPassword() {
-    wx.navigateTo({
-      url: '/pages/password/password',
+    if (this.data.connected)
+      wx.navigateTo({
+        url: '/pages/password/password?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
+      })
+    else
+      wx.showModal({
+      title: '提示',
+        content: '锁未连接',
+      showCancel: false
     })
   },
 
@@ -42,7 +58,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this
+    console.log(options)
+    that.setData({
+      name: options.name,
+      connectedDeviceId: options.connectedDeviceId,
+      connected: options.connected
+    })
   },
 
   /**

@@ -146,6 +146,10 @@ Page({
           }
         }
         if (isnotexist) {
+          if (app.globalData.deviceID == devices.deviceId) {
+            if (app.globalData.deviceName)
+              devices.name = app.globalData.deviceName
+          }
           that.data.devicesList.push(devices)
         }
       }
@@ -165,6 +169,10 @@ Page({
           }
         }
         if (isnotexist) {
+          if (app.globalData.deviceID == devices.devices[0].deviceId) {
+            if (app.globalData.deviceName)
+              devices.devices[0].name = app.globalData.deviceName
+          }
           that.data.devicesList.push(devices.devices[0])
         }
       }
@@ -184,6 +192,10 @@ Page({
           }
         }
         if (isnotexist) {
+          if (app.globalData.deviceID == devices[0].deviceId) {
+            if (app.globalData.deviceName)
+              devices[0].name = app.globalData.deviceName
+          }
           that.data.devicesList.push(devices[0])
         }
       }

@@ -2,12 +2,30 @@ const app = getApp()
 Page({
   data: {
     inputText: '',
-    receiveText: '',
     name: '',
     connectedDeviceId: '',
-    services: {},
-    characteristics: {},
-    connected: true
+    connected: false
+  },
+  change_name: function () {
+    var that = this
+    if (that.data.inputText) {
+      app.globalData.deviceName = that.data.inputText
+      wx.setStorage({
+        key: 'deviceName',
+        data: that.data.inputText,
+      })
+      wx.showToast({
+        title: '修改成功',
+        icon: 'success',
+        duration: 1000
+      })
+    }
+    else
+      wx.showModal({
+        title: '提示',
+        content: '名字至少一个字符',
+        showCancel: false
+      })
   },
   bindInput: function (e) {
     this.setData({
@@ -15,84 +33,22 @@ Page({
     })
     console.log(e.detail.value)
   },
-  Send: function () {
-    var that = this
-    if (that.data.connected) {
-      var buffer = new ArrayBuffer(that.data.inputText.length)
-      var dataView = new Uint8Array(buffer)
-      for (var i = 0; i < that.data.inputText.length; i++) {
-        dataView[i] = that.data.inputText.charCodeAt(i)
-      }
-
-      wx.writeBLECharacteristicValue({
-        deviceId: that.data.connectedDeviceId,
-        serviceId: that.data.services[0].uuid,
-        characteristicId: that.data.characteristics[0].uuid,
-        value: buffer,
-        success: function (res) {
-          console.log('发送成功')
-        }
-      })
-    }
-    else {
-      wx.showModal({
-        title: '提示',
-        content: '蓝牙已断开',
-        showCancel: false,
-        success: function (res) {
-          that.setData({
-            searching: false
-          })
-        }
-      })
-    }
-  },
   onLoad: function (options) {
     var that = this
     console.log(options)
     that.setData({
       name: options.name,
-      connectedDeviceId: options.connectedDeviceId
+      connectedDeviceId: options.connectedDeviceId,
+      connected: options.connected
     })
-    wx.getBLEDeviceServices({
-      deviceId: that.data.connectedDeviceId,
-      success: function (res) {
-        console.log(res.services)
-        that.setData({
-          services: res.services
-        })
-        wx.getBLEDeviceCharacteristics({
-          deviceId: options.connectedDeviceId,
-          serviceId: res.services[0].uuid,
-          success: function (res) {
-            console.log(res.characteristics)
-            that.setData({
-              characteristics: res.characteristics
-            })
-            wx.notifyBLECharacteristicValueChange({
-              state: true,
-              deviceId: options.connectedDeviceId,
-              serviceId: that.data.services[0].uuid,
-              characteristicId: that.data.characteristics[0].uuid,
-              success: function (res) {
-                console.log('启用notify成功')
-              }
-            })
-          }
-        })
-      }
-    })
+    if (app.globalData.deviceName)
+      that.setData({
+        inputText: app.globalData.deviceName
+      })
     wx.onBLEConnectionStateChange(function (res) {
       console.log(res.connected)
       that.setData({
         connected: res.connected
-      })
-    })
-    wx.onBLECharacteristicValueChange(function (res) {
-      var receiveText = app.buf2string(res.value)
-      console.log('接收到数据：' + receiveText)
-      that.setData({
-        receiveText: receiveText
       })
     })
   },

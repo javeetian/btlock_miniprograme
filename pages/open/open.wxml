@@ -1,9 +1,5 @@
 <view class="container">
-  <text style="font-size:medium;word-break:break-all">设备名称：{{name}}</text>
-  <text style="font-size:x-small;color:gray">状态：{{connected?"已连接":"已断开"}}</text>
-  <text style="font-size:medium;margin-top:10px">输入密码</text>
+  <text style="color:gray;font-size:medium;margin-top:15px;margin-bottom:2px">输入密码：</text>
   <input class="input" type="password" value="{{inputText}}" bindinput="bindInput" maxlength="6"/>
-  <text style="font-size:medium;margin-top:10px">接收内容：</text>
-  <input class="input" disabled value="{{receiveText}}" maxlength="20"/>
   <button type="primary" class="button" bindtap="Send">确认开锁</button>
 </view>

@@ -1,7 +1,5 @@
 <view class="container">
   <text style="color:gray;font-size:medium;margin-top:10px;margin-bottom:10px">新名称：</text>
-  <input class="input" type="text" value="{{inputText}}" bindinput="bindInput" maxlength="20"/>
-  <text style="color:gray;font-size:medium;margin-top:10px;margin-bottom:10px">接收内容：</text>
-  <input class="input" disabled value="{{receiveText}}" maxlength="20"/>
-  <button type="primary" class="button" bindtap="Send">确认修改</button>
+  <input class="input" type="text" placeholder="至少1个字，最多20个字" placeholder-style="color: gray"value="{{inputText}}" bindinput="bindInput" maxlength="20"/>
+  <button type="primary" class="button" bindtap="change_name">确认修改</button>
 </view>

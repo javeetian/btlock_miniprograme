@@ -7,24 +7,35 @@ Page({
   data: {
     name: '无',
     connected: false,
+    connectedDeviceId: '',
     searching: false,
     devicesList: []
   },
   onTapSearch() {
     wx.navigateTo({
-      url: '/pages/search/search',
+      url: '../search/search?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
     })
   },
   onTapOpen() {
-    console.log(app.globalData.deviceID)
-    if(this.data.connected)
       wx.navigateTo({
-        url: '../open/open?connectedDeviceId=' + app.globalData.deviceID + '&name=' + this.data.name
+        url: '../open/open?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
+      })
+  },
+  onTapOpen1() {
+    if (this.data.connected)
+      wx.navigateTo({
+        url: '../open/open?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
+      })
+    else
+      wx.showModal({
+        title: '提示',
+        content: '锁未连接',
+        showCancel: false
       })
   },
   onTapSet() {
     wx.navigateTo({
-      url: '/pages/set/set',
+      url: '../set/set?connectedDeviceId=' + this.data.connectedDeviceId + '&name=' + this.data.name + '&connected=' + this.data.connected
     })
   },
 
@@ -98,7 +109,7 @@ Page({
       }
     }
     wx.showLoading({
-      title: '连接蓝牙设备中...',
+      title: '正在连接蓝牙锁...',
     })
     wx.createBLEConnection({
       deviceId: app.globalData.deviceID,
@@ -113,6 +124,7 @@ Page({
         app.globalData.connected = true
         that.setData({
           connected: true,
+          connectedDeviceId: app.globalData.deviceID,
           name: name1
         })
       },
@@ -240,15 +252,14 @@ Page({
       success(res) {
         console.log(res.data)
         app.globalData.deviceID = res.data
+        wx.getStorage({
+          key: res.data,
+          success(res) {
+            console.log(res.data)
+            app.globalData.deviceName = res.data
+          }
+        })
         that.search_devices()
-      }
-    })
-
-    wx.getStorage({
-      key: 'deviceName',
-      success(res) {
-        console.log(res.data)
-        app.globalData.deviceName = res.data
       }
     })
   },

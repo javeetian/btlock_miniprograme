@@ -7,7 +7,7 @@ Page({
     connectedDeviceId: '',
     services: {},
     characteristics: {},
-    connected: true
+    connected: false
   },
   bindInput: function (e) {
     this.setData({
@@ -18,21 +18,33 @@ Page({
   Send: function () {
     var that = this
     if (that.data.connected) {
-      var buffer = new ArrayBuffer(that.data.inputText.length)
-      var dataView = new Uint8Array(buffer)
-      for (var i = 0; i < that.data.inputText.length; i++) {
-        dataView[i] = that.data.inputText.charCodeAt(i)
-      }
 
-      wx.writeBLECharacteristicValue({
-        deviceId: that.data.connectedDeviceId,
-        serviceId: that.data.services[1].uuid,
-        characteristicId: that.data.characteristics[0].uuid,
-        value: buffer,
-        success: function (res) {
-          console.log('发送成功')
+      if (that.data.inputText.length !== 6)
+        wx.showToast({
+          title: '密码长度必须为6',
+          icon: 'none',
+          duration: 1000
+        })
+      else {
+        var i = 0
+        var buffer = new ArrayBuffer(9)
+        var dataView = new Uint8Array(buffer)
+        dataView[i++] = 0xaa
+        dataView[i++] = 0x55
+        for (var j = 0; j < that.data.inputText.length; j++) {
+          dataView[i++] = that.data.inputText.charCodeAt(j)
         }
-      })
+        dataView[i++] = 0xff
+        wx.writeBLECharacteristicValue({
+          deviceId: that.data.connectedDeviceId,
+          serviceId: that.data.services[1].uuid,
+          characteristicId: that.data.characteristics[0].uuid,
+          value: buffer,
+          success: function (res) {
+            console.log('发送成功')
+          }
+        })
+      }
     }
     else {
       wx.showModal({
@@ -52,7 +64,8 @@ Page({
     console.log(options)
     that.setData({
       name: options.name,
-      connectedDeviceId: options.connectedDeviceId
+      connectedDeviceId: options.connectedDeviceId,
+      connected: options.connected
     })
     wx.getBLEDeviceServices({
       deviceId: that.data.connectedDeviceId,
@@ -90,10 +103,20 @@ Page({
     })
     wx.onBLECharacteristicValueChange(function (res) {
       var receiveText = app.buf2string(res.value)
+      var dataView = new DataView(res.value)
       console.log('接收到数据：' + receiveText)
-      that.setData({
-        receiveText: receiveText
-      })
+      if (dataView.byteLength == 9)
+        wx.showToast({
+          title: '开锁成功',
+          icon: 'success',
+          duration: 1000
+        })
+      else if (receiveText.search(/error/) !== -1)
+        wx.showToast({
+          title: '开锁失败',
+          icon: 'none',
+          duration: 1000
+        })
     })
   },
   onReady: function () {
