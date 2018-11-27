@@ -96,7 +96,7 @@ Page({
           data: e.currentTarget.id,
         })
         wx.navigateTo({
-          url: '../open/open?connectedDeviceId=' + e.currentTarget.id + '&name=' + name
+          url: '../open/open?connectedDeviceId=' + e.currentTarget.id + '&name=' + name + '&connected=' + true
         })
       },
       fail: function (res) {
